@@ -28,7 +28,7 @@ const FRAME_SCENES = {
     durationMs: 840,
   },
   chop: { envPath: 'assets/env-chop.png', framePaths: frames('chop'), durationMs: 960 },
-  fish: { envPath: 'assets/env-fish.png', framePaths: frames('fish'), durationMs: 1100 },
+  fish: { envPath: 'assets/env-fish.png', framePaths: frames('fish'), durationMs: 1680 },
   fire: { envPath: 'assets/env-cook.png', framePaths: frames('fire'), durationMs: 1000 },
   cook: { envPath: 'assets/env-kitchen.png', framePaths: frames('cook'), durationMs: 1000 },
   smith: { envPath: 'assets/env-smith.png', framePaths: frames('smith'), durationMs: 900 },

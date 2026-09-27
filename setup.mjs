@@ -64,7 +64,7 @@ export async function setup(ctx) {
           name: 'Avatar',
         })
         .item('Avatar', {
-          icon: 'assets/media/skills/combat/combat.svg',
+          icon: ctx.getResourceUrl('assets/icon-avatar.svg'),
           name: 'Avatar',
           onClick: () => {
             if (panel) panel.toggleVisible();
