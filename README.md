@@ -1,14 +1,6 @@
 # Avatar Window (Melvor Idle Mod)
 
-OSRS-styled in-world avatar panel embedded in Melvor’s main UI.
-
-## Features
-
-- In-page Melvor `block` at the top of the main content (sidebar toggles show/hide)
-- Fixed character look with transparent sprite compositing
-- Skill loops for every non-combat skill (same character, outfit changes with the skill)
-- Mining: static rock layer + character-only frame animation (rock never scales)
-- Activity environments, gain feed, combat HP
+In-world avatar panel embedded in Melvor’s main UI.
 
 ## Install (browser)
 
