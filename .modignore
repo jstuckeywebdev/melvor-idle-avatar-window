@@ -1,0 +1,9 @@
+.git
+.gitignore
+.cursor
+*.md
+*.plan.md
+agent-tools
+agent-transcripts
+node_modules
+.DS_Store

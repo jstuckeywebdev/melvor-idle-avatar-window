@@ -1,0 +1,425 @@
+/* Avatar — in-page Melvor UI block (pop-out / float deferred) */
+
+#aw-dock {
+  position: sticky;
+  bottom: 12px;
+  z-index: 40;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: flex-end;
+  gap: 8px;
+  width: max-content;
+  margin-left: auto;
+  pointer-events: none;
+}
+
+#aw-dock > * {
+  pointer-events: auto;
+}
+
+#avatar-window-root.aw-root,
+.aw-root.aw-inpage {
+  position: relative;
+  z-index: 20;
+  width: max-content;
+  max-width: none;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  pointer-events: auto;
+  font-family: inherit;
+  color: inherit;
+  box-sizing: border-box;
+  flex: 0 0 auto;
+}
+
+#avatar-window-root.aw-dock-fallback {
+  position: fixed;
+  right: 12px;
+  bottom: 12px;
+  z-index: 1040;
+}
+
+.aw-root.aw-hidden {
+  display: none !important;
+}
+
+.aw-root *,
+.aw-root *::before,
+.aw-root *::after {
+  box-sizing: border-box;
+}
+
+#avatar-window-root .aw-panel.block {
+  width: max-content;
+  max-width: 100%;
+  margin-bottom: 0;
+  overflow: hidden;
+}
+
+.aw-titlebar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0.4rem 0.75rem;
+}
+
+.aw-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.aw-title-actions {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.aw-btn {
+  appearance: none;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.15);
+  color: inherit;
+  border-radius: 4px;
+  width: 30px;
+  height: 28px;
+  cursor: pointer;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.aw-btn img {
+  width: 14px;
+  height: 14px;
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+.aw-btn:hover {
+  background: rgba(0, 0, 0, 0.28);
+}
+
+.aw-close {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  z-index: 5;
+  width: 22px;
+  height: 22px;
+  background: rgba(12, 10, 8, 0.55);
+}
+
+.aw-body {
+  padding: 0.45rem 0.6rem 0.6rem;
+}
+
+.aw-layout {
+  display: grid;
+  grid-template-columns: 220px 196px;
+  gap: 0.55rem;
+  align-items: stretch;
+}
+
+@media (max-width: 640px) {
+  .aw-layout {
+    grid-template-columns: min(220px, 100%);
+  }
+
+  .aw-side {
+    width: auto;
+    max-height: 140px;
+  }
+}
+
+.aw-stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 220px;
+  height: 220px;
+  min-height: 0;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  background: #1a140f;
+}
+
+[data-aw-scene] {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  background: transparent;
+}
+
+.aw-world {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  overflow: hidden;
+  padding-bottom: 34px;
+}
+
+.aw-world-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  image-rendering: auto;
+}
+
+.aw-world-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 50% 70%, transparent 35%, rgba(0, 0, 0, 0.28) 100%),
+    linear-gradient(to top, rgba(0, 0, 0, 0.45) 0%, transparent 35%);
+}
+
+.aw-actor {
+  position: relative;
+  z-index: 2;
+  width: min(62%, 150px);
+  margin-bottom: 0;
+  transform: none;
+  transform-origin: 50% 100%;
+  background: transparent;
+}
+
+.aw-char-sprite {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: transparent !important;
+  filter: drop-shadow(0 10px 8px rgba(0, 0, 0, 0.45));
+}
+
+.aw-actor-sheet {
+  width: min(68%, 160px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: transparent;
+  margin-bottom: 0;
+  transform: none;
+}
+
+/* Fixed-size layer stack: rock never scales with char animation frames */
+.aw-mine-layers {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 200 / 176;
+  background: transparent;
+}
+
+.aw-mine-rock,
+.aw-mine-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  background: transparent !important;
+  animation: none !important;
+  transform: none !important;
+}
+
+/* Rock behind miner so pickaxe head stays visible on impact */
+.aw-mine-rock {
+  z-index: 1;
+  filter: none !important;
+  pointer-events: none;
+}
+
+.aw-mine-frame {
+  z-index: 2;
+  filter: drop-shadow(0 8px 6px rgba(0, 0, 0, 0.4));
+}
+
+.aw-contact-shadow {
+  width: 52%;
+  height: 11px;
+  margin-top: -12px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(0, 0, 0, 0.6) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.aw-pose-idle {
+  animation: aw-world-breathe 2.8s ease-in-out infinite;
+}
+
+@keyframes aw-world-breathe {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+}
+
+.aw-activity {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  bottom: 8px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  max-width: calc(100% - 16px);
+  font-size: 12px;
+  background: rgba(20, 14, 8, 0.72);
+  border: 1px solid rgba(107, 84, 46, 0.8);
+  border-radius: 999px;
+  padding: 3px 10px;
+  margin: 0;
+  color: #f0e0b0;
+  white-space: nowrap;
+}
+
+.aw-activity-icon {
+  width: 18px;
+  height: 18px;
+  image-rendering: pixelated;
+}
+
+.aw-floaters {
+  position: absolute;
+  inset: 8px 8px auto auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  pointer-events: none;
+  z-index: 20;
+}
+
+.aw-floater {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(20, 14, 8, 0.8);
+  border: 1px solid #6b542e;
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #b6f5a0;
+  animation: aw-float-up 1.1s ease-out forwards;
+}
+
+.aw-floater img { width: 14px; height: 14px; }
+
+@keyframes aw-float-up {
+  from { opacity: 1; transform: translateY(8px); }
+  to { opacity: 0; transform: translateY(-28px); }
+}
+
+.aw-side {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  width: 196px;
+  min-height: 0;
+  max-height: 220px;
+}
+
+.aw-health {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.aw-health-row {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: 6px;
+  align-items: center;
+}
+
+.aw-health-label {
+  font-size: 11px;
+  opacity: 0.9;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.aw-bar {
+  position: relative;
+  height: 16px;
+  border-radius: 2px;
+  background: #0f0c08;
+  overflow: hidden;
+  border: 1px solid #6b542e;
+}
+
+.aw-bar-fill { height: 100%; width: 0; transition: width 0.2s ease; }
+.aw-bar-hp .aw-bar-fill { background: linear-gradient(90deg, #8b1e1e, #c0392b); }
+.aw-bar-barrier .aw-bar-fill { background: linear-gradient(90deg, #1e4a8b, #3a7bd5); }
+.aw-bar-enemy .aw-bar-fill { background: linear-gradient(90deg, #5b1e8b, #9b59b6); }
+
+.aw-bar-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
+  color: #fff;
+}
+
+.aw-feed {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 2px;
+}
+
+.aw-feed-empty {
+  font-size: 11px;
+  opacity: 0.55;
+  text-align: center;
+  padding: 6px;
+}
+
+.aw-feed-item {
+  display: grid;
+  grid-template-columns: 18px 1fr auto;
+  gap: 6px;
+  align-items: center;
+  font-size: 11px;
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 3px;
+  padding: 3px 6px;
+}
+
+.aw-feed-item img {
+  width: 16px;
+  height: 16px;
+}
+
+.aw-feed-qty {
+  font-weight: 700;
+  color: #6c9b4a;
+}

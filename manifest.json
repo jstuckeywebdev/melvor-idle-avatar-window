@@ -1,0 +1,5 @@
+{
+  "namespace": "avatarWindow",
+  "setup": "setup.mjs",
+  "load": ["styles.css", "templates.html"]
+}
